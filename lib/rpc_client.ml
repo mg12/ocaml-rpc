@@ -81,15 +81,17 @@ module Utils = struct
 
 end
 
-type content_type = [ `XML | `JSON ]
+type content_type = [ `XML | `JSON | `BSON ]
 
 let string_of_content_type = function
   | `XML  -> "text/xml"
   | `JSON -> "application/json"
+  | `BSON -> "application/bson"
 
 let content_type_of_string = function
   | "text/xml"        -> `XML
   | "application/json"-> `JSON
+  | "application/bson"-> `BSON
   | s                 -> failwith (s ^ " is an invalid MIME content type")
 
 module Headers = struct
@@ -148,11 +150,13 @@ let string_of_rpc_call headers call =
   match headers.Headers.content_type with
   | `XML  -> Xmlrpc.string_of_call call
   | `JSON -> Jsonrpc.string_of_call call
+  | `BSON -> Bsonrpc.string_of_call call
 
 let rpc_response_of_fd headers fd =
   match headers.Headers.content_type with
   | `XML  -> Xmlrpc.response_of_in_channel (Unix.in_channel_of_descr fd)
   | `JSON -> Jsonrpc.response_of_in_channel (Unix.in_channel_of_descr fd)
+  | `BSON -> Bsonrpc.response_of_in_channel (Unix.in_channel_of_descr fd)
 
 let http_send_call ~fd ~path ~headers call =
   let body = string_of_rpc_call headers call in

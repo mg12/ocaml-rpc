@@ -1,7 +1,7 @@
 OCAMLC = ocamlfind ocamlc
 OCAMLOPT = ocamlfind ocamlopt
 OCAMLFLAGS = -annot -g
-PACKS = xmlm,lwt
+PACKS = xmlm,lwt,bson
 PACKS_JS = js_of_ocaml,js_of_ocaml.syntax
 
 ICAMLP4 = -I $(shell ocamlfind query camlp4) \
@@ -18,6 +18,7 @@ TARGETS = \
 	pa_rpc.cma idl.cma \
 	xmlrpc.cmi xmlrpc.cmo xmlrpc.o xmlrpc.cmx \
 	jsonrpc.cmi jsonrpc.cmo jsonrpc.o jsonrpc.cmx \
+	bsonrpc.cmi bsonrpc.cmo bsonrpc.o bsonrpc.cmx \
 	rpc_client.cmi rpc_client.cmo rpc_client.o rpc_client.cmx
 TARGETS_JS = \
 	rpc_client_js.cmi rpc_client_js.cmo rpc_client_js_helper.cmo \
@@ -80,7 +81,7 @@ uninstall:
 
 .PHONY: doc
 doc: $(INTF)
-	python ../doc/doc.py $(DOCDIR) "rpclib" "package" "jsonrpc pa_rpc rpc xmlrpc" "." "xmlm" ""
+	python ../doc/doc.py $(DOCDIR) "rpclib" "package" "jsonrpc bsonrpc pa_rpc rpc xmlrpc" "." "xmlm" ""
 
 clean:
 	rm -f *.cmo *.cmx *.cma *.cmxa *.annot *.o *.cmi *.a

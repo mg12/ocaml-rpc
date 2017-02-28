@@ -1,6 +1,6 @@
 version = "1.6.0"
 description = "RPC: lightweight library to convert plain ML types to and from RPC values"
-requires = "rpclib.xml, rpclib.json"
+requires = "rpclib.xml, rpclib.json, rpclib.bson"
 
 package "syntax" (
   description = "rpc: library to marshalling/unmarshalling ML types to/from RPC intermediate language"
@@ -34,6 +34,13 @@ package "json" (
   requires = "rpclib.core"
   archive(byte) = "jsonrpc.cmo"
   archive(native) = "jsonrpc.cmx"
+)
+
+package "bson" (
+  description = "BSON-RPC marshalling/unmarshalling"
+  requires = "rpclib.core"
+  archive(byte) = "bsonrpc.cmo"
+  archive(native) = "bsonrpc.cmx"
 )
 
 package "unix" (

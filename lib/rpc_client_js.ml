@@ -42,3 +42,5 @@ let do_rpc enc dec content_type ~url call =
 let do_xml_rpc = do_rpc Xmlrpc.string_of_call Xmlrpc.response_of_string "text/xml"
 let do_json_rpc = do_rpc Jsonrpc.string_of_call Jsonrpc.response_of_string "text/json"
 let do_json_rpc_opt = do_rpc Rpc_client_js_helper.string_of_call Rpc_client_js_helper.response_of_string "text/json"
+let do_bson_rpc = do_rpc Bsonrpc.string_of_call Bsonrpc.response_of_string "text/bson"
+let do_bson_rpc_opt = do_rpc Rpc_client_js_helper.string_of_call Rpc_client_js_helper.response_of_string "text/bson"
