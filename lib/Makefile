@@ -23,10 +23,10 @@ TARGETS = \
 TARGETS_JS = \
 	rpc_client_js.cmi rpc_client_js.cmo rpc_client_js_helper.cmo \
 	rpc_client.cmo rpc_client_js.cma
-
+TESTS = bsonrpc_test
 
 .PHONY: all all-js clean clean-js
-all: $(TARGETS)
+all: $(TARGETS) $(TESTS)
 
 all-js:$(TARGETS_JS)
 
@@ -66,6 +66,10 @@ rpc_client_js.cmo: rpc_client_js.ml rpc_client_js_helper.cmo
 %.cmi: %.mli %.ml
 	$(OCAMLOPT) $(OCAMLFLAGS) -package $(PACKS) -c -o $@ $<
 
+%_test: %_test.ml
+	$(OCAMLOPT) $(OCAMLFLAGS) -package unix,$(PACKS) -linkpkg rpc.cmx bsonrpc.cmx jsonrpc.cmx xmlrpc.cmx $@.ml -o $@
+	./$@
+
 .PHONY: install install-js
 install: INSTALL_PATH = $(DESTDIR)$(shell ocamlfind printconf destdir)
 install: all
@@ -84,4 +88,4 @@ doc: $(INTF)
 	python ../doc/doc.py $(DOCDIR) "rpclib" "package" "jsonrpc bsonrpc pa_rpc rpc xmlrpc" "." "xmlm" ""
 
 clean:
-	rm -f *.cmo *.cmx *.cma *.cmxa *.annot *.o *.cmi *.a
+	rm -f *.cmo *.cmx *.cma *.cmxa *.annot *.o *.cmi *.a *_test

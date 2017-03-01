@@ -45,7 +45,9 @@ let rec rpc_of_bson x =
   | Bson.String  s -> String s
   | Bson.JSCode  dt -> DateTime dt
   | Bson.Document (("enum", (Bson.Array xs))::_)  -> Enum (List.map (fun x->rpc_of_bson x) xs)
-  | Bson.Document (("dict", (Bson.Document xs))::_)-> Dict (List.map (fun (s,x)->s,rpc_of_bson x) xs)
+  | Bson.Document (("dict", (Bson.Document xs))::_)-> Dict (List.map (fun (s,x)->s,rpc_of_bson x)
+                      (List.rev xs) (* List.rev works around a bug in Bson.Document that returns xs in the reversed order *)
+                  )
   | Bson.Null _ -> Null
   | _ -> raise Bson_unknown
 
